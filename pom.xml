@@ -10,7 +10,7 @@
   
 	<groupId>org.docx4j</groupId>
 	<artifactId>docx4j</artifactId>
-	<version>6.0.2-SNAPSHOT</version>
+	<version>6.0.1.inspire-1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>docx4j</name>
 	
@@ -29,7 +29,8 @@
 	  </license>
   	</licenses>
 	<scm>
-	    <developerConnection>scm:git|git@github.com:plutext/docx4j.git</developerConnection>
+	    <connection>scm:git:https://github.com/InspireTechnologies/docx4j.git</connection>
+	    <developerConnection>scm:git:https://github.com/InspireTechnologies/docx4j.git</developerConnection>
     </scm>
 	<inceptionYear>2007</inceptionYear>
 
@@ -632,6 +633,18 @@
 		    <version>20.0</version>
 		</dependency>	
 		
+            <!-- see https://stackoverflow.com/a/50195961/1031689 -->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
 		<!--  for anon functionality; since 3.3.1 -->
 		<dependency>
 		    <groupId>com.thedeanda</groupId>
@@ -667,96 +680,15 @@
 
 	</dependencies>
 
-<!-- 
 <distributionManagement>
     <repository>
-        <id>internal.repo</id>
-        <name>Temporary Staging Repository</name>
-        <url>file://${project.build.directory}/mvn-repo</url>
+        <id>inspire-nexus</id>
+        <name>Inspire Technology Release Repository</name>
+        <url>http://nexus.inspire.local:8081/repository/maven-releases</url>
     </repository>
 </distributionManagement>
- -->
 
 	<profiles> <!--  use -P eg mvn -Psign-artifacts  -->
-		<profile>
-			<id>sign-artifacts</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		
-
-		<!-- Deploy a snapshot to GitHub  
-		
-			 See http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github
-			 
-			 To do this:
-			 0. uncomment distribution management above
-			 1. comment out parent element (top of pom), since this is what makes deploy push to https://oss.sonatype.org
-			 2. comment out maven-javadoc-plugin, since its not worth bothering with that large upload
-			 3. execute 
-			  
-			       mvn clean deploy  -Pgithub-mvn-repo
-		
-		 -->		
-		<profile>
-			<id>github-mvn-repo</id>
-			<build>
-			
-				<plugins>
-				
-				    <plugin>
-				        <artifactId>maven-deploy-plugin</artifactId>
-				        <version>2.8.1</version>
-				        <configuration>
-				            <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-				        </configuration>
-				    </plugin>
-				
-			        <plugin>
-			            <groupId>com.github.github</groupId>
-			            <artifactId>site-maven-plugin</artifactId>
-			            <version>0.12</version>
-			            <configuration>
-			            	<server>github</server>
-			            	<merge>true</merge>
-			                <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
-			                <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-			                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-			                <branch>refs/heads/mvn-repo</branch>                        <!-- remote branch name -->
-			                <includes><include>**/*</include></includes>
-			                <repositoryName>docx4j</repositoryName>      <!-- github repo name -->
-			                <repositoryOwner>plutext</repositoryOwner>    <!-- github username  -->
-			            </configuration>
-			            <executions>
-			              <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-			              <execution>
-			                <goals>
-			                  <goal>site</goal>
-			                </goals>
-			                <phase>deploy</phase>
-			              </execution>
-			            </executions>
-			        </plugin>			
-				</plugins>
-			</build>
-		</profile>
-		
 
    		<!--  comment this out, until the Windows path issues below are fixed in m2eclipse
    	<profile>
@@ -794,45 +726,6 @@
    		</dependencies>
    	</profile>
    				-->
-
-    <profile>
-        <id>java-9</id>
-        <activation>
-            <jdk>9</jdk>
-        </activation>
-        <dependencies>
-            <!-- see https://stackoverflow.com/a/50195961/1031689 -->
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>2.3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>1.1.1</version>
-            </dependency>
-        </dependencies>
-    </profile>                
-    <profile>
-        <id>java-10</id>
-        <activation>
-            <jdk>10</jdk>
-        </activation>
-        <dependencies>
-            <!-- see https://stackoverflow.com/a/50195961/1031689 -->
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>2.3.0</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>1.1.1</version>
-            </dependency>
-        </dependencies>
-    </profile>                
 
    </profiles>
 
