@@ -4,7 +4,7 @@
 
 	<groupId>org.docx4j</groupId>
 	<artifactId>docx4j</artifactId>
-	<version>6.0.1.inspire-1</version>
+	<version>6.0.1.inspire-2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>docx4j</name>
 	
@@ -25,7 +25,7 @@
 	<scm>
 	    <connection>scm:git:https://github.com/InspireTechnologies/docx4j.git</connection>
 	    <developerConnection>scm:git:https://github.com/InspireTechnologies/docx4j.git</developerConnection>
-      <tag>doxj4-6.0.1.inspire-1</tag>
+      <tag>HEAD</tag>
   </scm>
 	<inceptionYear>2007</inceptionYear>
 
